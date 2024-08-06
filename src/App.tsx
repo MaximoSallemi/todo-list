@@ -1,22 +1,24 @@
-import { useState } from 'react'
-import viteLogo from '/vite.svg'
+import { useState } from 'react';
+import React from 'react';
 
 function App() {
-  const [todo, setTodo] = useState("");
-  const [todoList, setTodoList] = useState([]);
-  
-  const handleForm = (e) => {
-    e.preventDefault();
-    setTodoList([...todoList, {todoName: todo}]);
-    setTodo("");
-    }
 
-  const deleteTodo = (deleteValue) => {
-    const restTodoList = [...todoList.filter((val) => {
-      return val.todoName !== deleteValue
+
+  const [todoList, setTodoList] = useState<string[]>([]);
+  const [todo, setTodo] = useState("");
+
+  const handleForm = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setTodoList([...todoList, todo]);
+    setTodo("");
+  }
+
+  const deleteTodo = (deleteValue: string) => {
+    const newTodoList = [...todoList.filter((val: string) => {
+      return val !== deleteValue
     }),
   ];
-  setTodoList(restTodoList);
+  setTodoList(newTodoList);
   };
 
   return <div className="bg-gray-300 w-full h-screen flex items-center">
@@ -25,10 +27,10 @@ function App() {
       <form onSubmit={handleForm}> 
         <input className="border-2 placeholder:text-gray-500 rounded-lg 
         border-black w-full p-5 mb-5 text-black" 
-        type="text" 
-        placeholder="Add Todo" 
-        value={todo}
-        onChange={(e) => setTodo(e.target.value)}
+          type="text" 
+          placeholder="Add Todo" 
+          value={todo}
+          onChange={(e) => setTodo(e.target.value)}
         />
         <button 
         type="submit" 
@@ -36,13 +38,13 @@ function App() {
       </form>
       <div className="todo-show-area">
         <ul>
-          {todoList.map((singleTodo, index) => {
+          {todoList.map((todo, index) => {
             return (<li 
               key = {index}
               className="bg-black mb-5 flex justify-between text-white py-5
               rounded-lg text-3xl px-5">
-              {singleTodo.todoName}{" "}
-              <span onClick={() => deleteTodo(singleTodo.todoName)} className="text-red-600 cursor-pointer">x</span>
+              {todo}{" "}
+              <span onClick={() => deleteTodo(todo)} className="text-red-600 cursor-pointer">x</span>
             </li>)
           })}
         </ul>
